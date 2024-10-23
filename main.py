@@ -1,8 +1,6 @@
 import sys
-from Tokenizer import TokenizationProcess
-from Parser import ParsingProcess
+from Processes import tokenization, parsing
 
-# ============ main program ==============
 PROGRAM_ERROR = 1
 
 def main():
@@ -21,9 +19,9 @@ def main():
         return PROGRAM_ERROR
 
     if command == "tokenize":
-        return TokenizationProcess(file_content=file_content)
+        return tokenization(file_content=file_content)
     elif command == "parse":
-        return ParsingProcess(file_content=file_content)
+        return parsing(file_content=file_content)
 
     print(f"Unknown command: {command}", file=sys.stderr)
     return PROGRAM_ERROR

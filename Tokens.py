@@ -1,5 +1,3 @@
-
-# ========== Tokens classes for the tokenization process ========
 class Token:
     def __init__(self, token_type: str, lexeme, literal) -> None:
         self.token_type = token_type
@@ -8,9 +6,9 @@ class Token:
 
     def __str__(self) -> str:
         if self.lexeme is None:
-            return f"{self.token_type}  {self.literal}"
+            return f"{self.token_type:<15}\t{self.literal:<8}"
 
-        return f"{self.token_type} {self.lexeme} {self.literal}"
+        return f"{self.token_type:<15}\t{self.lexeme:<8}\t{self.literal}"
 
 class ErrorToken:
     def __init__(self, line_number: int, error_description: str) -> None:

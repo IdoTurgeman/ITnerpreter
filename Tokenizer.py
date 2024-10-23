@@ -1,30 +1,22 @@
 from collections import namedtuple
-from typing import Union
+from typing import Union, List
 from LanguageConstants import SUPPORTED_TOKENS, TokenType, LANGUAGE_IDENTIFIERS
 from Tokens import Token, ErrorToken
-import sys
-
-def TokenizationProcess(file_content) -> int:
-    tokenizer = Tokenizer(file_content=file_content)
-    status = tokenizer.tokenize()
-    tokenizer.print_tokens(sys.stdout, sys.stderr)
-    return status
 
 class Tokenizer:
     TokenizerState = namedtuple('ScannerState', ['dictionary', 'token'])
 
     # ========== status codes ============
     SCANNER_SUCCESS = 0
-    SCANNER_ERROR = 65
+    TOKENIZER_ERROR = 65
     STRING_CHAR = "\""
     NUMBER_DOT = "."
 
     # =========== supported tokens identifiers and names ===============
-
-    def __init__(self, file_content: list[str]) -> None:
-        self.file_content: list[str] = file_content
-        self.tokens: list[Token] = []
-        self.errors: list[ErrorToken] = []
+    def __init__(self, file_content: List[str]) -> None:
+        self.file_content: List[str] = file_content
+        self.tokens: List[Token] = []
+        self.errors: List[ErrorToken] = []
         self.status_code = Tokenizer.SCANNER_SUCCESS
 
     def add_error_token(self, line_number, description, status_code) -> None:
@@ -89,12 +81,9 @@ class Tokenizer:
             elif char == self.NUMBER_DOT:
                 if self.NUMBER_DOT in current_state.token:
                     self.add_error_token(line_number, f"Unexpected character: {current_state.token}",
-                                         self.SCANNER_ERROR)
+                                         self.TOKENIZER_ERROR)
                     return self.set_current_state(), True
                 else:
-                    # raise an error, not sure why I added it :)
-                    # if current_state.dictionary != SUPPORTED_TOKENS:
-                    #     self.add_token(current_state.dictionary.get(None), current_state.token)
                     current_state = self.set_current_state(dictionary=TokenType.NUMBER, token=current_state.token + char)
                     return current_state, True
             else:
@@ -123,13 +112,13 @@ class Tokenizer:
         current_state = self.set_current_state(current_state.dictionary, current_state.token + char)
         if char not in current_state.dictionary.keys():
             if current_state.dictionary == SUPPORTED_TOKENS:
-                self.add_error_token(line_number, f"Unexpected character: {current_state.token}", self.SCANNER_ERROR)
+                self.add_error_token(line_number, f"Unexpected character: {current_state.token}", self.TOKENIZER_ERROR)
                 current_state = self.set_current_state()
                 return current_state, False
             else:
                 if None not in current_state.dictionary.keys():
                     self.add_error_token(line_number, f"Unexpected character: {current_state.token}",
-                                         self.SCANNER_ERROR)
+                                         self.TOKENIZER_ERROR)
                     current_state = self.set_current_state()
                     return current_state, False
                 else:
@@ -148,7 +137,7 @@ class Tokenizer:
                 self.add_token(val, current_state.token)
                 current_state = self.set_current_state()
         else:
-            self.add_error_token(line_number, f"Unexpected character: {char}", self.SCANNER_ERROR)
+            self.add_error_token(line_number, f"Unexpected character: {char}", self.TOKENIZER_ERROR)
             current_state = self.set_current_state()
 
         return current_state, False
@@ -189,7 +178,7 @@ class Tokenizer:
         """
         if current_state.token:
             if current_state.dictionary == self.STRING_CHAR:
-                self.add_error_token(line_number, "Unterminated string.", self.SCANNER_ERROR)
+                self.add_error_token(line_number, "Unterminated string.", self.TOKENIZER_ERROR)
             elif current_state.dictionary == TokenType.NUMBER:
                 self.add_token(
                     TokenType.NUMBER,
@@ -197,7 +186,7 @@ class Tokenizer:
                     str(float(current_state.token))
                 )
             elif current_state.dictionary == SUPPORTED_TOKENS:
-                self.add_error_token(line_number, f"Unexpected character: {current_state.token}", self.SCANNER_ERROR)
+                self.add_error_token(line_number, f"Unexpected character: {current_state.token}", self.TOKENIZER_ERROR)
             elif current_state.dictionary == TokenType.IDENTIFIER:
                 self.add_token(
                     LANGUAGE_IDENTIFIERS.get(current_state.token, TokenType.IDENTIFIER),
@@ -244,8 +233,8 @@ class Tokenizer:
         return self.status_code
 
     def print_tokens(self, stdout, stderr) -> None:
-        for token in self.tokens:
-            print(token, file=stdout)
+        for idx, token in enumerate(self.tokens):
+            print(f"{idx:<4}| {token}", file=stdout)
 
-        for err_token in self.errors:
-            print(err_token, file=stderr)
+        for idx, err_token in enumerate(self.errors):
+            print(f"{idx:<4}| {err_token}", file=stderr)

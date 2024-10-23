@@ -1,4 +1,3 @@
-
 class TokenType:
     # Literal Types
     STRING = "STRING"
@@ -30,10 +29,30 @@ class TokenType:
     STAR = "STAR"
     SLASH = "SLASH"
 
+    # Language Identifiers
+    AND = "AND"
+    CLASS = "CLASS"
+    FALSE = "FALSE"
+    ELSE = "ELSE"
+    FOR = "FOR"
+    FUN = "FUN"
+    IF = "IF"
+    NULL = "NULL"
+    OR = "OR"
+    PRINT = "PRINT"
+    RETURN = "RETURN"
+    SUPER = "SUPER"
+    THIS = "THIS"
+    TRUE = "TRUE"
+    VAR = "VAR"   
+    WHILE = "WHILE"
+    ELIF = "ELIF"
+
     # Other
     COMMENT = "COMMENT"
     WHITESPACE = "WHITESPACE"
     EOF = "EOF"
+
 
 
 SUPPORTED_TOKENS = {
@@ -59,20 +78,21 @@ SUPPORTED_TOKENS = {
 }
 
 LANGUAGE_IDENTIFIERS = {
-    "and": "AND",
-    "class": "CLASS",
-    "else": "ELSE",
-    "false": "FALSE",
-    "for": "FOR",
-    "fun": "FUN",
-    "if": "IF",
-    "nil": "NIL",
-    "or": "OR",
-    "print": "PRINT",
-    "return": "RETURN",
-    "super": "SUPER",
-    "this": "THIS",
-    "true": "TRUE",
-    "var": "VAR",
-    "while": "WHILE",
+    "and": TokenType.AND,
+    "class": TokenType.CLASS,
+    "else": TokenType.ELSE,
+    "false": TokenType.FALSE,
+    "for": TokenType.FOR,
+    "fun": TokenType.FUN,
+    "if": TokenType.IF,
+    "elif": TokenType.ELIF,
+    "null": TokenType.NULL,
+    "or": TokenType.OR,
+    "print": TokenType.PRINT,
+    "return": TokenType.RETURN,
+    "super": TokenType.SUPER,
+    "this": TokenType.THIS,
+    "true": TokenType.TRUE,
+    "var": TokenType.VAR,
+    "while": TokenType.WHILE,
 }
