@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 from Processes import tokenization, parsing, interpreting
 
@@ -5,7 +6,7 @@ PROGRAM_ERROR = 1
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: ./main.py <filename> [optional] <command>", file=sys.stderr)
+        print("Usage: Ithon <filename> [optional command]", file=sys.stderr)
         print("possible commands: [tokenize, parse, execute]")
         return PROGRAM_ERROR
 
@@ -14,6 +15,7 @@ def main():
         command = sys.argv[2]
     else:
         command = "execute"
+
 
     try:
         with open(filename) as file:
