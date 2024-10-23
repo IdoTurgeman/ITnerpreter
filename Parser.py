@@ -2,7 +2,6 @@ from LanguageConstants import TokenType
 from ASTNodes import (Block, PrintStatement, VariableDeclaration,
                       BinaryOperation, UnaryOperation, Literal, Identifier, Assignment)
 
-
 class Parser:
     """
     A parser that parses a series of tokens to generate an Abstract Syntax Tree (AST).
@@ -187,7 +186,7 @@ class Parser:
         """
         expr = self.multiplication()
         while self.match(TokenType.PLUS, TokenType.MINUS):
-            operator = self.previous().lexeme
+            operator = self.previous().token_type
             right = self.multiplication()
             expr = BinaryOperation(left=expr, operator=operator, right=right)
         return expr
@@ -200,7 +199,7 @@ class Parser:
         """
         expr = self.unary()
         while self.match(TokenType.STAR, TokenType.SLASH):
-            operator = self.previous().lexeme
+            operator = self.previous().token_type
             right = self.unary()
             expr = BinaryOperation(left=expr, operator=operator, right=right)
         return expr
@@ -212,7 +211,7 @@ class Parser:
         :return: The parsed unary expression or primary expression node
         """
         if self.match(TokenType.BANG, TokenType.MINUS):
-            operator = self.previous().lexeme
+            operator = self.previous().token_type
             operand = self.unary()
             return UnaryOperation(operator=operator, operand=operand)
         return self.primary()

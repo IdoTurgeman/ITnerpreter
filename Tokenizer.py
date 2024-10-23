@@ -7,7 +7,7 @@ class Tokenizer:
     TokenizerState = namedtuple('ScannerState', ['dictionary', 'token'])
 
     # ========== status codes ============
-    SCANNER_SUCCESS = 0
+    TOKENIZER_SUCCESS = 0
     TOKENIZER_ERROR = 65
     STRING_CHAR = "\""
     NUMBER_DOT = "."
@@ -17,7 +17,7 @@ class Tokenizer:
         self.file_content: List[str] = file_content
         self.tokens: List[Token] = []
         self.errors: List[ErrorToken] = []
-        self.status_code = Tokenizer.SCANNER_SUCCESS
+        self.status_code = Tokenizer.TOKENIZER_SUCCESS
 
     def add_error_token(self, line_number, description, status_code) -> None:
         self.errors.append(ErrorToken(line_number, description))
