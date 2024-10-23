@@ -32,7 +32,8 @@ ln -s $(pwd)/Ithon.py /usr/local/bin/Ithon
 ## Usage
 Run the interpreter with:
 ```bash
-Ithon <filename>
+Ithon <filename> [optional command]
+  - commands:[tokenize, parse, execute: default]
 ```
 
 ## Example
